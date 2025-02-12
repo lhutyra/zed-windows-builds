@@ -38,7 +38,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: zed-industries/zed
-          ref: main
+          ref: 8b45634d39808b5b29c82e3366ede148e8f7728e
           path: zed
 
       - name: Install rust nightly
