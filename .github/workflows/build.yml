@@ -14,10 +14,10 @@ jobs:
         backend: [vulkan, opengl]
         include:
           - backend: vulkan
-            artifact_name: zed-debug
+            artifact_name: zed-release
             rustflags: ""
           - backend: opengl
-            artifact_name: zed-debug-opengl
+            artifact_name: zed-release-opengl
             rustflags: "--cfg gles"
 
     steps:
@@ -62,15 +62,15 @@ jobs:
         shell: pwsh
         run: ./Parse-Rustflags.ps1 ${{ matrix.rustflags }}
 
-      - name: Build debug
+      - name: Build release
         working-directory: zed
-        run: cargo build  # Budowanie w trybie debug (bez --release)
+        run: cargo build --release
 
       - name: Archive build
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.artifact_name }}
-          path: zed/target/debug/zed.exe  # Poprawiona ścieżka dla debug
+          path: zed/target/release/zed.exe
 
   release:
     needs: build
@@ -91,11 +91,11 @@ jobs:
 
       - name: Create release directories and zip
         run: |
-          mkdir -p zed-debug zed-debug-opengl
-          mv artifacts/zed-debug/zed.exe zed-debug/
-          mv artifacts/zed-debug-opengl/zed.exe zed-debug-opengl/
-          zip -r zed-windows-debug.zip zed-debug/*
-          zip -r zed-windows-debug-opengl.zip zed-debug-opengl/*
+          mkdir -p zed-release zed-release-opengl
+          mv artifacts/zed-release/zed.exe zed-release/
+          mv artifacts/zed-release-opengl/zed.exe zed-release-opengl/
+          zip -r zed-windows.zip zed-release/*
+          zip -r zed-windows-opengl.zip zed-release-opengl/*
 
       - name: Upload release build artifacts to GitHub Release
         uses: softprops/action-gh-release@v2
@@ -105,5 +105,5 @@ jobs:
           draft: false
           make_latest: true
           files: |
-            zed-windows-debug.zip
-            zed-windows-debug-opengl.zip
+            zed-windows.zip
+            zed-windows-opengl.zip
