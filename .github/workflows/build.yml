@@ -64,7 +64,7 @@ jobs:
 
       - name: Build release
         working-directory: zed
-        run: cargo build --release
+        run: cargo build
 
       - name: Archive build
         uses: actions/upload-artifact@v4
