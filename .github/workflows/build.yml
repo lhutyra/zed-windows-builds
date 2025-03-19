@@ -41,7 +41,7 @@ jobs:
       - name: Checkout Zed
         uses: actions/checkout@v4
         with:
-          repository: zed-industries/zed
+          repository: lhutyra/zed
           ref: main
           path: zed
 
